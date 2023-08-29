@@ -1,7 +1,5 @@
 import styles from "@styles/Home.module.css";
-import Input from "./components";
-import Label from "./components";
-import Button from "./components";
+import {Button, Label, Input} from "../components/components";
 import Head from "next/head";
 
 export const EMPTY_RESULT_HINT = "Geben Sie einen Werte > 1 ein in das Formular ein.";
@@ -17,14 +15,9 @@ function Home() {
 
             <main className={styles.main}>
                 <h1>FizzBuzz - Bewerber Quiz</h1>
-                <Label>Target Digit</Label>
-                <Input
-                    type="number"
-                    onChange={onChange}
-                    min={1}
-                    step={1}
-                />
-                <Button tyoe="Submit">Submit</Button>
+               <Label>Target Digit</Label>
+               <Input type="number" />
+               <Button type="submit">Submit</Button>
             </main>
         </>
     );
