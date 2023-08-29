@@ -1,5 +1,5 @@
 import styles from "@styles/Home.module.css";
-import { Button, Label, Input, ResultList, Result, singleResult } from "../components/components";
+import { Button, Label, Input, ResultList, Result, singleResult, HintText } from "../components/components";
 import Head from "next/head";
 import { useState } from "react";
 
@@ -7,7 +7,7 @@ export const EMPTY_RESULT_HINT = "Geben Sie einen Werte > 1 ein in das Formular 
 
 function Home() {
     const [results, setResults] = useState([]);
-
+    const [inputFocus, setInputFocus] = useState(false);
     const handleFormSubmit = (event) => {
         event.preventDefault();
         const targetDigit = parseInt(event.target.elements.targetDigit.value);
@@ -17,11 +17,15 @@ function Home() {
                 let result = "";
                 if (i % 3 === 0) result += "Fizz";
                 if (i % 5 === 0) result += "Buzz";
-                if (i % 3 === 0 && i % 5 === 0) result += "Fizz Buzz";
+                if (i % 3 === 0 && i % 5 === 0) result = "Fizz Buzz";
                 newResults.push(result || i);
             }
             setResults(newResults);
         }
+    };
+    const handleInputFocus = () => {
+        setInputFocus(true);
+        setResults([]);
     };
     return (
         <>
@@ -35,11 +39,13 @@ function Home() {
                 <h1>FizzBuzz - Bewerber Quiz</h1>
                 <form onSubmit={handleFormSubmit} >
                     <Label htmlFor="targetDigit">Target Digit</Label>
-                    <Input type="number" id="targetDigit" name="targetDigit" />
+                    <Input type="number" id="targetDigit" name="targetDigit"
+                        onFocus={handleInputFocus} />
                     <Button type="submit" role="button">Submit</Button>
+                    <HintText className="hint">Please submit a digit greater than 0.</HintText>
                 </form>
                 <h2>Ergebnisse</h2>
-                <ResultList>
+                <ResultList className="result">
                     {results.map((result, index) => (
                         <Result key={index}>
                             <singleResult>

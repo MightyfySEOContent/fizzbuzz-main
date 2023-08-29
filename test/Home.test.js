@@ -35,42 +35,42 @@ describe("<Home/>...", () => {
                 screen.getByText(/^1$/, { selector: ".result li" });
                 screen.getByText(/^2$/, { selector: ".result li" });
             });
-        
+
             it("Fizz has to be rendered", async () => {
                 render(<Home />);
                 submitFormWith(3);
                 expect(screen.queryByText(EMPTY_RESULT_HINT, { selector: ".result" })).toBeNull();
                 screen.getByText("Fizz", { selector: ".result li" });
             });
-        
+
             it("Buzz has to be rendered", async () => {
                 render(<Home />);
                 submitFormWith(5);
                 expect(screen.queryByText(EMPTY_RESULT_HINT, { selector: ".result" })).toBeNull();
                 screen.getByText("Buzz", { selector: ".result li" });
             });
-        
+
             it("FizzBuzz has to be rendered", async () => {
                 render(<Home />);
                 submitFormWith(15);
                 expect(screen.queryByText(EMPTY_RESULT_HINT, { selector: ".result" })).toBeNull();
                 screen.getByText("FizzBuzz", { selector: ".result li" });
             });
-        
+
             it("renders Fizz for multiples of 3", async () => {
                 render(<Home />);
                 submitFormWith(6);
                 expect(screen.queryByText(EMPTY_RESULT_HINT, { selector: ".result" })).toBeNull();
                 screen.getByText("Fizz", { selector: ".result li" });
             });
-        
+
             it("renders Buzz for multiples of 5", async () => {
                 render(<Home />);
                 submitFormWith(10);
                 expect(screen.queryByText(EMPTY_RESULT_HINT, { selector: ".result" })).toBeNull();
                 screen.getByText("Buzz", { selector: ".result li" });
             });
-        
+
             it("renders FizzBuzz for multiples of both 3 and 5", async () => {
                 render(<Home />);
                 submitFormWith(30);
@@ -87,10 +87,10 @@ describe("<Home/>...", () => {
     });
 
     it("clears result list when input gains focus", async () => {
-        render(<Home value={3} />);
-        expect(screen.getAllByText("Fizz", { selector: ".result li" })).toHaveLength(1);
-        gainFocusOnInput();
-        await screen.findByText(EMPTY_RESULT_HINT, { selector: ".result" });
+        render(<Home />);
+        expect(screen.queryByText("1")).not.toBe(null);
+        fireEvent.focus(screen.getByLabelText("Target Digit"));
+        expect(screen.queryByText("1")).toBeNull();
     });
 
     function submitFormWith(digit) {
