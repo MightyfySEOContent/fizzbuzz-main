@@ -1,10 +1,28 @@
 import styles from "@styles/Home.module.css";
-import {Button, Label, Input} from "../components/components";
+import { Button, Label, Input, ResultList, Result, singleResult } from "../components/components";
 import Head from "next/head";
+import { useState } from "react";
 
 export const EMPTY_RESULT_HINT = "Geben Sie einen Werte > 1 ein in das Formular ein.";
 
 function Home() {
+    const [results, setResults] = useState([]);
+
+    const handleFormSubmit = (event) => {
+        event.preventDefault();
+        const targetDigit = parseInt(event.target.elements.targetDigit.value);
+        if (targetDigit > 1) {
+            const newResults = [];
+            for (let i = 1; i <= targetDigit; i++) {
+                let result = "";
+                if (i % 3 === 0) result += "Fizz";
+                if (i % 5 === 0) result += "Buzz";
+                if (i % 3 === 0 && i % 5 === 0) result += "Fizz Buzz";
+                newResults.push(result || i);
+            }
+            setResults(newResults);
+        }
+    };
     return (
         <>
             <Head>
@@ -15,9 +33,17 @@ function Home() {
 
             <main className={styles.main}>
                 <h1>FizzBuzz - Bewerber Quiz</h1>
-               <Label>Target Digit</Label>
-               <Input type="number" />
-               <Button type="submit">Submit</Button>
+                <form onSubmit={handleFormSubmit} >
+                    <Label htmlFor="targetDigit">Target Digit</Label>
+                    <Input type="number" id="targetDigit" name="targetDigit" />
+                    <Button type="submit">Submit</Button>
+                </form>
+                <h2>Ergebnisse</h2>
+                <ResultList>
+                    {ResultList.map((result, index) => (
+                        <Result key={index}>{result}</Result>
+                    ))}
+                </ResultList>
             </main>
         </>
     );
