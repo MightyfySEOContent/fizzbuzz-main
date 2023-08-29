@@ -36,14 +36,19 @@ function Home() {
                 <form onSubmit={handleFormSubmit} >
                     <Label htmlFor="targetDigit">Target Digit</Label>
                     <Input type="number" id="targetDigit" name="targetDigit" />
-                    <Button type="submit">Submit</Button>
+                    <Button type="submit" role="button">Submit</Button>
                 </form>
                 <h2>Ergebnisse</h2>
                 <ResultList>
-                    {ResultList.map((result, index) => (
-                        <Result key={index}>{result}</Result>
+                    {results.map((result, index) => (
+                        <Result key={index}>
+                            <singleResult>
+                                {result}
+                            </singleResult>
+                        </Result>
                     ))}
                 </ResultList>
+
             </main>
         </>
     );
