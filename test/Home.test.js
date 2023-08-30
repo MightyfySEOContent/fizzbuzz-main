@@ -97,28 +97,28 @@ describe("<Home/>...", () => {
 
         it("clears result list when input gains focus", async () => {
             render(<Home />);
-            await screen.findByText("1");
 
             const submitButton = screen.getByRole("button", { name: "Submit" });
             fireEvent.click(submitButton);
             const heading = screen.getByRole("heading", { name: "FizzBuzz - Bewerber Quiz" });
             fireEvent.focus(heading);
+
             await waitFor(() => {
                 expect(screen.queryByText("1")).not.toBeInTheDocument();
             });
+        });
     });
-});
 
-function submitFormWith(digit) {
-    const input = screen.getByLabelText("Target Digit");
-    const submitButton = screen.getByRole("button", { name: "Submit" });
-    fireEvent.change(input, { target: { value: digit } });
-    fireEvent.click(submitButton);
-}
+    function submitFormWith(digit) {
+        const input = screen.getByLabelText("Target Digit");
+        const submitButton = screen.getByRole("button", { name: "Submit" });
+        fireEvent.change(input, { target: { value: digit } });
+        fireEvent.click(submitButton);
+    }
 
-function gainFocusOnInput() {
-    const input = screen.getByLabelText("Target Digit");
-    fireEvent.focus(input);
-}
+    function gainFocusOnInput() {
+        const input = screen.getByLabelText("Target Digit");
+        fireEvent.focus(input);
+    }
 
 });
