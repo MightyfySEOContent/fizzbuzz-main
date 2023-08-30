@@ -91,8 +91,11 @@ describe("<Home/>...", () => {
             it("error message when a digit lower than 1 was submitted", async () => {
                 render(<Home />);
                 submitFormWith(0);
-                expect(screen.queryByText("Please enter a valid digit greater than 0.", { selector: ".error" })).toBeInTheDocument();
+                const errorMessage = await screen.findByText("Please enter a valid digit greater than 0.", { selector: ".error" });
+                expect(errorMessage).toBeInTheDocument();
             });
+            
+
         });
 
         it("clears result list when input gains focus", async () => {

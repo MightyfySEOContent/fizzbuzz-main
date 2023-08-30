@@ -42,8 +42,9 @@ function Home() {
                     <Input type="number" id="targetDigit" name="targetDigit" />
                     <Button type="submit" role="button">Submit</Button>
                     <HintText className={error ? "error" : "hint"}>
-                        {error ? "Please enter a valid digit greater than 0" : " Please submit a digit greater than 0."}
+                        {error ? "Please enter a valid digit greater than 0." : " Please enter a valid digit greater than 0."}
                     </HintText>
+
                 </form>
                 <h2>Ergebnisse</h2>
                 <ResultList className="result">
