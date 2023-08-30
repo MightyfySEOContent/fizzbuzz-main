@@ -61,36 +61,44 @@ describe("<Home/>...", () => {
                 render(<Home />);
                 submitFormWith(6);
                 expect(screen.queryByText(EMPTY_RESULT_HINT, { selector: ".result" })).toBeNull();
-                screen.getByText("Fizz", { selector: ".result li" });
+                const fizzElement = screen.getAllByText("Fizz", { selector: ".result li" });
+                expect(fizzElement[0]).toBeInTheDocument()
             });
 
             it("renders Buzz for multiples of 5", async () => {
                 render(<Home />);
                 submitFormWith(10);
                 expect(screen.queryByText(EMPTY_RESULT_HINT, { selector: ".result" })).toBeNull();
-                screen.getByText("Buzz", { selector: ".result li" });
+                const buzzElement = screen.getAllByText("Buzz", { selector: ".result li" });
+                expect(buzzElement[0]).toBeInTheDocument();
             });
 
             it("renders FizzBuzz for multiples of both 3 and 5", async () => {
                 render(<Home />);
                 submitFormWith(30);
                 expect(screen.queryByText(EMPTY_RESULT_HINT, { selector: ".result" })).toBeNull();
-                screen.getByText("FizzBuzz", { selector: ".result li" });
+
+                const fizzBuzzElements = screen.getAllByText("FizzBuzz", { selector: ".result li" });
+                expect(fizzBuzzElements[0]).toBeInTheDocument();
+            });
+
+            it("error message when a digit lower than 1 was submitted", async () => {
+                render(<Home />);
+                submitFormWith(0);
+                expect(screen.queryByText("Please enter a valid digit greater than 0.", { selector: ".error" })).toBeInTheDocument();
             });
         });
 
-        it("error message when a digit lower than 1 was submitted", async () => {
+        it("clears result list when input gains focus", async () => {
             render(<Home />);
-            submitFormWith(0);
-            expect(screen.queryByText("Please enter a valid digit greater than 0.", { selector: ".error" })).toBeInTheDocument();
-        });
-    });
+            await screen.findByText("1");
 
-    it("clears result list when input gains focus", async () => {
-        render(<Home />);
-        expect(screen.queryByText("1")).not.toBe(null);
-        fireEvent.focus(screen.getByLabelText("Target Digit"));
-        expect(screen.queryByText("1")).toBeNull();
+            fireEvent.focus(screen.getByLabelText("Target Digit"));
+
+            await waitFor(() => {
+                expect(screen.queryByText("1")).not.toBeInTheDocument();
+            });
+        });
     });
 
     function submitFormWith(digit) {
@@ -104,4 +112,5 @@ describe("<Home/>...", () => {
         const input = screen.getByLabelText("Target Digit");
         fireEvent.focus(input);
     }
+
 });
