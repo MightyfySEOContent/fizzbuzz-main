@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Home, { EMPTY_RESULT_HINT } from "@pages/";
 
 describe("<Home/>...", () => {
@@ -22,10 +22,16 @@ describe("<Home/>...", () => {
             screen.getByRole("button", { name: "Submit" });
         });
 
-        it("hint text that a digit greater 0 has to be submitted", () => {
+        it("error message when a digit lower than 1 was submitted", async () => {
             render(<Home />);
-            screen.getByText("Please submit a digit greater than 0.", { selector: ".hint" });
+            submitFormWith(0);
+            const errorMessage = await screen.findByText("Please enter a valid digit greater than 0.", { selector: ".error" });
+            expect(errorMessage).toBeInTheDocument();
         });
+
+
+
+
 
         describe("result when...", () => {
             it("only digits has to be rendered", async () => {
@@ -93,24 +99,26 @@ describe("<Home/>...", () => {
             render(<Home />);
             await screen.findByText("1");
 
-            fireEvent.focus(screen.getByLabelText("Target Digit"));
-
+            const submitButton = screen.getByRole("button", { name: "Submit" });
+            fireEvent.click(submitButton);
+            const heading = screen.getByRole("heading", { name: "FizzBuzz - Bewerber Quiz" });
+            fireEvent.focus(heading);
             await waitFor(() => {
                 expect(screen.queryByText("1")).not.toBeInTheDocument();
             });
-        });
     });
+});
 
-    function submitFormWith(digit) {
-        const input = screen.getByLabelText("Target Digit");
-        const submitButton = screen.getByRole("button", { name: "Submit" });
-        fireEvent.change(input, { target: { value: digit } });
-        fireEvent.click(submitButton);
-    }
+function submitFormWith(digit) {
+    const input = screen.getByLabelText("Target Digit");
+    const submitButton = screen.getByRole("button", { name: "Submit" });
+    fireEvent.change(input, { target: { value: digit } });
+    fireEvent.click(submitButton);
+}
 
-    function gainFocusOnInput() {
-        const input = screen.getByLabelText("Target Digit");
-        fireEvent.focus(input);
-    }
+function gainFocusOnInput() {
+    const input = screen.getByLabelText("Target Digit");
+    fireEvent.focus(input);
+}
 
 });

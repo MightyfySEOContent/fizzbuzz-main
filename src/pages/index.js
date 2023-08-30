@@ -7,11 +7,12 @@ export const EMPTY_RESULT_HINT = "Geben Sie einen Wert größer als 1 in das For
 
 function Home() {
     const [results, setResults] = useState([]);
-    
+    const [error, setError] = useState(false);
     const handleFormSubmit = (event) => {
         event.preventDefault();
         const targetDigit = parseInt(event.target.elements.targetDigit.value);
         if (targetDigit > 0) {
+            setError(false);
             const newResults = [];
             for (let i = 1; i <= targetDigit; i++) {
                 let result = "";
@@ -21,9 +22,11 @@ function Home() {
                 newResults.push(result);
             }
             setResults(newResults);
+        } else {
+            setError(true); // Setze die Fehlerklasse hier
         }
     };
-    
+
     return (
         <>
             <Head>
@@ -38,7 +41,9 @@ function Home() {
                     <Label htmlFor="targetDigit">Target Digit</Label>
                     <Input type="number" id="targetDigit" name="targetDigit" />
                     <Button type="submit" role="button">Submit</Button>
-                    <HintText className="hint">Please submit a digit greater than 0.</HintText>
+                    <HintText className={error ? "error" : "hint"}>
+                        {error ? "Please enter a valid digit greater than 0" : " Please submit a digit greater than 0."}
+                    </HintText>
                 </form>
                 <h2>Ergebnisse</h2>
                 <ResultList className="result">
@@ -54,4 +59,3 @@ function Home() {
 }
 
 export default Home;
-    
