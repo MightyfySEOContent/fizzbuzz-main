@@ -120,8 +120,10 @@ describe("<Home/>...", () => {
     }
 
     function gainFocusOnInput() {
-        const input = screen.getByLabelText("Target Digit");
-        fireEvent.focus(input);
-    }
+        const input = document.getElementById("input");
+        expect(input).toBeDefined();
+        input.focus();
+      }
+      
 
 });
